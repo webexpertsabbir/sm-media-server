@@ -22,6 +22,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         const usersPostsCollection = client.db('smMedia').collection('userPosts');
+        const commentCollection = client.db('smMedia').collection('postComment');
 
         app.get('/posts', async (req, res) => {
             const query = {};
@@ -35,6 +36,26 @@ async function run() {
             const singelPost = await usersPostsCollection.findOne(query);
             res.send(singelPost)
         });
+
+
+      
+        app.get('/post/comment/:commentId', async (req, res) => {
+            const commentId = req.params.commentId;
+            const query = { commentId }
+            const comment = await commentCollection.find(query).toArray();
+            res.send(comment);
+        });
+
+
+
+        app.post('/post/comment', async (req, res) => {
+            const comment = req.body;
+            console.log(comment);
+            const result = await commentCollection.insertOne(comment);
+            res.send(result);
+        });
+
+
 
         app.post('/posts', async (req, res) => {
             const post = req.body;
