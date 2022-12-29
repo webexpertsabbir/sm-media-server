@@ -55,18 +55,18 @@ async function run() {
         });
 
 
-        // app.put('/post/love/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const filter = { _id: ObjectId(id) }
-        //     const loveReact = req.body;
-        //     const updatedDoc = {
-        //         $set: {
-        //             loveReact,
-        //         }
-        //     }
-        //     const result = await usersPostsCollection.updateOne(filter, updatedDoc);
-        //     res.send(result);
-        // });
+        app.put('/post/love/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const loveReact = req.body;
+            const updatedDoc = {
+                $set: {
+                    loveReact,
+                }
+            }
+            const result = await usersPostsCollection.updateOne(filter, updatedDoc);
+            res.send(result);
+        });
 
 
 
@@ -82,6 +82,14 @@ async function run() {
             const comment = req.body;
             // console.log(comment);
             const result = await commentCollection.insertOne(comment);
+            res.send(result);
+        });
+
+
+        app.post('/post/loverect', async (req, res) => {
+            const loveReact = req.body;
+            // console.log(comment);
+            const result = await loveReactCollection.insertOne(loveReact);
             res.send(result);
         });
 
