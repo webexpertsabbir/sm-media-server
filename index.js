@@ -68,6 +68,19 @@ async function run() {
             res.send(result);
         });
 
+        app.put('/user/admin/about/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const about = req.body;
+            // const updatedDoc = {
+            //     $set: {
+            //         loveReact,
+            //     }
+            // }
+            const result = await aboutCollection.replaceOne(filter, about);
+            res.send(result);
+        });
+
 
 
         // app.post('/post/love', async (req, res) => {
