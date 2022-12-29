@@ -23,11 +23,18 @@ async function run() {
     try {
         const usersPostsCollection = client.db('smMedia').collection('userPosts');
         const commentCollection = client.db('smMedia').collection('postComment');
+        const aboutCollection = client.db('smMedia').collection('about');
         const loveReactCollection = client.db('smMedia').collection('loveReact');
 
         app.get('/posts', async (req, res) => {
             const query = {};
             const posts = await usersPostsCollection.find(query).toArray();
+            res.send(posts);
+        });
+
+        app.get('/user/admin/about', async (req, res) => {
+            const query = {};
+            const posts = await aboutCollection.find(query).toArray();
             res.send(posts);
         });
 
@@ -48,18 +55,18 @@ async function run() {
         });
 
 
-        app.put('/post/love/:id', async (req, res) => {
-            const id = req.params.id;
-            const filter = { _id: ObjectId(id) }
-            const loveReact = req.body;
-            const updatedDoc = {
-                $set: {
-                    loveReact,
-                }
-            }
-            const result = await usersPostsCollection.updateOne(filter, updatedDoc);
-            res.send(result);
-        });
+        // app.put('/post/love/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const filter = { _id: ObjectId(id) }
+        //     const loveReact = req.body;
+        //     const updatedDoc = {
+        //         $set: {
+        //             loveReact,
+        //         }
+        //     }
+        //     const result = await usersPostsCollection.updateOne(filter, updatedDoc);
+        //     res.send(result);
+        // });
 
 
 
