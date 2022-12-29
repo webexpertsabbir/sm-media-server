@@ -23,6 +23,7 @@ async function run() {
     try {
         const usersPostsCollection = client.db('smMedia').collection('userPosts');
         const commentCollection = client.db('smMedia').collection('postComment');
+        const loveReactCollection = client.db('smMedia').collection('loveReact');
 
         app.get('/posts', async (req, res) => {
             const query = {};
@@ -47,19 +48,40 @@ async function run() {
         });
 
 
-
-        app.post('/post/comment', async (req, res) => {
-            const comment = req.body;
-            console.log(comment);
-            const result = await commentCollection.insertOne(comment);
+        app.put('/post/love/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const loveReact = req.body;
+            const updatedDoc = {
+                $set: {
+                    loveReact,
+                }
+            }
+            const result = await usersPostsCollection.updateOne(filter, updatedDoc);
             res.send(result);
         });
 
 
 
+        // app.post('/post/love', async (req, res) => {
+        //     const loveReact = req.body;
+        //     // console.log(comment);
+        //     const result = await loveReactCollection.insertOne(loveReact);
+        //     res.send(result);
+        // });
+
+
+        app.post('/post/comment', async (req, res) => {
+            const comment = req.body;
+            // console.log(comment);
+            const result = await commentCollection.insertOne(comment);
+            res.send(result);
+        });
+
+
         app.post('/posts', async (req, res) => {
             const post = req.body;
-            console.log(post);
+            // console.log(post);
             const result = await usersPostsCollection.insertOne(post);
             res.send(result);
         });
